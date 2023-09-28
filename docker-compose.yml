@@ -4,7 +4,7 @@ services:
   app:
     build: .
     entrypoint: .docker/entrypoint.sh
-    container_name: prismaapi-app
+    container_name: prismaapi
     ports:
       - '3000:3000'
       - '5555:5555'
@@ -15,7 +15,7 @@ services:
 
   db:
     build: .docker/postgres
-    container_name: prismaapi-db
+    container_name: prismadb
     restart: always
     tty: true
     ports:
