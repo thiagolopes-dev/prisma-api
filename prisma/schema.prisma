@@ -25,8 +25,8 @@ model Post {
   content   String?
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
-  author    User?    @relation(fields: [authoId], references: [id])
-  authoId   Int?
+  author    User?    @relation(fields: [authorId], references: [id])
+  authorId  Int?
 
   @@map("post")
 }
