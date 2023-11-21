@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { UnauthorizedError } from 'src/common/errors/types/UnauthorizedError';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserRepository } from './repositories/users.repository';
@@ -15,6 +16,7 @@ export class UsersService {
   }
 
   findAll() {
+    throw new UnauthorizedError('Não Autorizado');
     return this.userRepository.findAll();
   }
 
