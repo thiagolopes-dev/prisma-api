@@ -17,7 +17,6 @@ export class UsersService {
   }
 
   findAll() {
-    // throw new UnauthorizedError('Não Autorizado');
     return this.userRepository.findAll();
   }
 
