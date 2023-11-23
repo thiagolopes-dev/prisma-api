@@ -1,8 +1,11 @@
 import { Injectable } from "@nestjs/common";
+import { Prisma } from '@prisma/client';
+import { NotFoundError } from "src/common/errors/types/NotFoundError";
 import { PrismaService } from "src/prisma/prisma.service";
-import { CreatePostDto } from "../dto/create-post.dto";
 import { UpdatePostDto } from "../dto/update-post.dto";
 import { PostEntity } from "../entities/post.entity";
+import { CreatePostDto } from './../dto/create-post.dto';
+
 
 @Injectable()
 export class PostsRepository {
@@ -12,8 +15,31 @@ export class PostsRepository {
   ) { }
 
   async create(createPostDto: CreatePostDto): Promise<PostEntity> {
-    return await this.prisma.post.create({
-      data: createPostDto
+    const { authorEmail } = createPostDto;
+
+    delete createPostDto.authorEmail;
+
+    const user = await this.prisma.user.findUnique({
+      where: {
+        email: authorEmail,
+      },
+    });
+
+    if (!user) {
+      throw new NotFoundError('Author not found.');
+    }
+
+    const data: Prisma.PostCreateInput = {
+      ...createPostDto,
+      author: {
+        connect: {
+          email: authorEmail,
+        },
+      },
+    };
+
+    return this.prisma.post.create({
+      data,
     });
   }
 
