@@ -42,7 +42,11 @@ export class PostsRepository {
   async findAll(): Promise<PostEntity[]> {
     return this.prisma.post.findMany({
       include: {
-        author: true,
+        author: {
+          select: {
+            name: true
+          }
+        }
       },
     });
   }
